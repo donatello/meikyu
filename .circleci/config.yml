@@ -1,42 +1,39 @@
 version: 2
 
 jobs:
-  ghc-head-unregisterised:
+  ghc-8.2.2:
     docker:
       - image: docker:stable-git
     environment:
-      - GHC_LIB_VER: "8.5"
-      - GHC_REV: e3ae0eb8e13adbbbec163d65c3b6e613666c56c9
-      - GHC_VER: "8.5.20180310"
-      - GHC_CONF_OPTS: --enable-unregisterised
+      - GHC_REV: "ghc-8.2.2-release"
+      - GHC_VER: "8.2.2"
+      # - GHC_CONF_OPTS: --enable-unregisterised
     steps:
       - checkout
       - setup_remote_docker
       - run: |
-          docker login -u terrorjack -p $DOCKER_PASS
-          docker build --build-arg GHC_LIB_VER=$GHC_LIB_VER --build-arg GHC_REV=$GHC_REV --build-arg GHC_VER=$GHC_VER --build-arg GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN --build-arg GHC_CONF_OPTS=$GHC_CONF_OPTS -t terrorjack/meikyu:ghc-$GHC_VER-unregisterised -t terrorjack/meikyu:ghc-head-unregisterised .
-          docker push terrorjack/meikyu:ghc-$GHC_VER-unregisterised
-          docker push terrorjack/meikyu:ghc-head-unregisterised
+          docker login -u donatello -p $DOCKER_PASS
+          docker build --build-arg GHC_REV=$GHC_REV --build-arg GHC_VER=$GHC_VER --build-arg GHC_CONF_OPTS=$GHC_CONF_OPTS -t donatello/meikyu:ghc-8.2.2 .
+          docker push donatello/meikyu:ghc-8.2.2
 
-  ghc-head:
-    docker:
-      - image: docker:stable-git
-    environment:
-      - GHC_LIB_VER: "8.5"
-      - GHC_REV: e3ae0eb8e13adbbbec163d65c3b6e613666c56c9
-      - GHC_VER: "8.5.20180310"
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run: |
-          docker login -u terrorjack -p $DOCKER_PASS
-          docker build --build-arg GHC_LIB_VER=$GHC_LIB_VER --build-arg GHC_REV=$GHC_REV --build-arg GHC_VER=$GHC_VER --build-arg GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN --build-arg GHC_CONF_OPTS="" -t terrorjack/meikyu:ghc-$GHC_VER -t terrorjack/meikyu:ghc-head .
-          docker push terrorjack/meikyu:ghc-$GHC_VER
-          docker push terrorjack/meikyu:ghc-head
+  # ghc-head:
+  #   docker:
+  #     - image: docker:stable-git
+  #   environment:
+  #     - GHC_LIB_VER: "8.5"
+  #     - GHC_REV: e3ae0eb8e13adbbbec163d65c3b6e613666c56c9
+  #     - GHC_VER: "8.5.20180310"
+  #   steps:
+  #     - checkout
+  #     - setup_remote_docker
+  #     - run: |
+  #         docker login -u donatello -p $DOCKER_PASS
+  #         docker build --build-arg GHC_LIB_VER=$GHC_LIB_VER --build-arg GHC_REV=$GHC_REV --build-arg GHC_VER=$GHC_VER --build-arg GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN --build-arg GHC_CONF_OPTS="" -t donatello/meikyu:ghc-$GHC_VER -t donatello/meikyu:ghc-head .
+  #         docker push donatello/meikyu:ghc-$GHC_VER
+  #         docker push donatello/meikyu:ghc-head
 
 workflows:
   version: 2
   build:
     jobs:
-      - ghc-head-unregisterised
-      - ghc-head
+      - ghc-8.2.2

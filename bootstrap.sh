@@ -31,7 +31,7 @@ apk add --no-cache --no-progress \
 
 mkdir -p /root/.local/bin
 cd /root/.local/bin
-tar xz --wildcards --strip-components=1 -C . '*/stack' -f /tmp/stack-1.6.3-linux-x86_64-static.tar.gz
+tar xz --wildcards --strip-components=1 -C . '*/stack' -f /tmp/stack-1.6.5-linux-x86_64-static.tar.gz
 stack --no-terminal --resolver lts-9 --system-ghc install \
     alex \
     happy \
@@ -47,19 +47,19 @@ mv /tmp/build.mk mk/
 SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-$GHC_VER --disable-ld-override $GHC_CONF_OPTS
 make -j4
 make install
-sed -i -e "s,ghc-$GHC_VER,ghc-$GHC_LIB_VER," /root/.stack/programs/x86_64-linux/ghc-$GHC_VER/share/doc/ghc-$GHC_VER/html/index.html
+# sed -i -e "s,ghc-$GHC_VER,ghc-$GHC_LIB_VER," /root/.stack/programs/x86_64-linux/ghc-$GHC_VER/share/doc/ghc-$GHC_VER/html/index.html
 printf "installed" > /root/.stack/programs/x86_64-linux/ghc-$GHC_VER.installed
 
-cp -r /root/.stack/programs/x86_64-linux/ghc-$GHC_VER/share/doc/ghc-$GHC_VER/html /tmp
-cd /tmp/html
-touch .nojekyll
-git init
-git config user.email "astrohavoc@gmail.com"
-git config user.name "Shao Cheng"
-git checkout -b gh-pages
-git add --all
-git commit -q --message="HTML documentation of ghc/ghc@$GHC_REV"
-git push https://TerrorJack:$GITHUB_ACCESS_TOKEN@github.com/TerrorJack/meikyu.git gh-pages --force
+# cp -r /root/.stack/programs/x86_64-linux/ghc-$GHC_VER/share/doc/ghc-$GHC_VER/html /tmp
+# cd /tmp/html
+# touch .nojekyll
+# git init
+# git config user.email "astrohavoc@gmail.com"
+# git config user.name "Shao Cheng"
+# git checkout -b gh-pages
+# git add --all
+# git commit -q --message="HTML documentation of ghc/ghc@$GHC_REV"
+# git push https://TerrorJack:$GITHUB_ACCESS_TOKEN@github.com/TerrorJack/meikyu.git gh-pages --force
 cd /root
 
 apk del \
@@ -85,7 +85,7 @@ rm -rf \
     /tmp/bootstrap.sh \
     /tmp/ghc \
     /tmp/html \
-    /tmp/stack-1.6.3-linux-x86_64-static.tar.gz \
+    /tmp/stack-1.6.5-linux-x86_64-static.tar.gz \
     /root/.local/bin/HsColour \
     /root/.local/bin/alex \
     /root/.local/bin/happy \
