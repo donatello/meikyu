@@ -1,37 +1,11 @@
 #!/bin/sh -e
 
-apk upgrade --no-cache --no-progress
-apk add --no-cache --no-progress \
-    autoconf \
-    automake \
-    binutils-gold \
-    bzip2 \
-    ca-certificates \
-    coreutils \
-    file \
-    findutils \
-    g++ \
-    gawk \
-    gcc \
-    ghc \
-    git \
-    gmp-dev \
-    gzip \
-    libffi-dev \
-    make \
-    musl-dev \
-    ncurses-dev \
-    openssh \
-    patch \
-    perl \
-    py3-sphinx \
-    sed \
-    tar \
-    zlib-dev
+echo HOME=$HOME STACK_ROOT=$STACK_ROOT
+export PATH=${HOME}/.local/bin:${STACK_ROOT}/programs/x86_64-linux/ghc-${GHC_VER}/bin:$PATH
+export LANG=en_US.UTF-8
 
-mkdir -p /root/.local/bin
-cd /root/.local/bin
-tar xz --wildcards --strip-components=1 -C . '*/stack' -f /tmp/stack-1.6.5-linux-x86_64-static.tar.gz
+mkdir -p ${HOME}/.local/bin
+tar xz --wildcards --strip-components=1 -C /usr/local/bin '*/stack' -f /tmp/stack-1.6.5-linux-x86_64-static.tar.gz
 stack --no-terminal --resolver lts-9 --system-ghc install \
     alex \
     happy \
@@ -44,52 +18,22 @@ git checkout $GHC_REV
 git submodule update --init --recursive
 mv /tmp/build.mk mk/
 ./boot
-SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-$GHC_VER --disable-ld-override $GHC_CONF_OPTS
+SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=${STACK_ROOT}/programs/x86_64-linux/ghc-$GHC_VER --disable-ld-override $GHC_CONF_OPTS
 make -j4
 make install
-# sed -i -e "s,ghc-$GHC_VER,ghc-$GHC_LIB_VER," /root/.stack/programs/x86_64-linux/ghc-$GHC_VER/share/doc/ghc-$GHC_VER/html/index.html
-printf "installed" > /root/.stack/programs/x86_64-linux/ghc-$GHC_VER.installed
+printf "installed" > ${STACK_ROOT}/programs/x86_64-linux/ghc-$GHC_VER.installed
 
-# cp -r /root/.stack/programs/x86_64-linux/ghc-$GHC_VER/share/doc/ghc-$GHC_VER/html /tmp
-# cd /tmp/html
-# touch .nojekyll
-# git init
-# git config user.email "astrohavoc@gmail.com"
-# git config user.name "Shao Cheng"
-# git checkout -b gh-pages
-# git add --all
-# git commit -q --message="HTML documentation of ghc/ghc@$GHC_REV"
-# git push https://TerrorJack:$GITHUB_ACCESS_TOKEN@github.com/TerrorJack/meikyu.git gh-pages --force
-cd /root
-
-apk del \
-    autoconf \
-    automake \
-    binutils-gold \
-    bzip2 \
-    coreutils \
-    file \
-    findutils \
-    g++ \
-    gawk \
-    ghc \
-    gmp-dev \
-    make \
-    patch \
-    perl \
-    py3-sphinx \
-    sed
-
-mv /root/.stack/programs /tmp/programs
+# Cleanup!
+mv ${HOME}/.stack/programs /tmp/programs
 rm -rf \
-    /tmp/bootstrap.sh \
-    /tmp/ghc \
-    /tmp/html \
-    /tmp/stack-1.6.5-linux-x86_64-static.tar.gz \
-    /root/.local/bin/HsColour \
-    /root/.local/bin/alex \
-    /root/.local/bin/happy \
-    /root/.stack
-mkdir /root/.stack
-mv /tmp/config.yaml /root/.stack/
-mv /tmp/programs /root/.stack/programs
+   /tmp/bootstrap.sh \
+   /tmp/ghc \
+   /tmp/html \
+   /tmp/stack-1.6.5-linux-x86_64-static.tar.gz \
+   ${HOME}/.local/bin/HsColour \
+   ${HOME}/.local/bin/alex \
+   ${HOME}/.local/bin/happy \
+   ${HOME}/.stack
+mkdir ${HOME}/.stack
+mv /tmp/config.yaml ${HOME}/.stack/
+mv /tmp/programs ${HOME}/.stack/programs
