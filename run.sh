@@ -29,11 +29,12 @@ apk add --no-cache --no-progress \
     tar \
     zlib-dev
 
-chown stack /tmp/bootstrap.sh \
-      /tmp/build.mk /tmp/config.yaml \
-      /tmp/stack-1.6.5-linux-x86_64-static.tar.gz
+# chown stack /tmp/bootstrap.sh \
+#       /tmp/build.mk /tmp/config.yaml \
+#       /tmp/stack-1.6.5-linux-x86_64-static.tar.gz
 
-su -s /bin/sh stack /tmp/bootstrap.sh
+# su -s /bin/sh stack /tmp/bootstrap.sh
+/tmp/bootstrap.sh
 
 apk del \
     autoconf \

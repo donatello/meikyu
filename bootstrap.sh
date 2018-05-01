@@ -24,7 +24,6 @@ make install
 printf "installed" > ${STACK_ROOT}/programs/x86_64-linux/ghc-$GHC_VER.installed
 
 # Cleanup!
-mv ${HOME}/.stack/programs /tmp/programs
 rm -rf \
    /tmp/bootstrap.sh \
    /tmp/ghc \
@@ -34,6 +33,5 @@ rm -rf \
    ${HOME}/.local/bin/alex \
    ${HOME}/.local/bin/happy \
    ${HOME}/.stack
-mkdir ${HOME}/.stack
-mv /tmp/config.yaml ${HOME}/.stack/
-mv /tmp/programs ${HOME}/.stack/programs
+
+mv /tmp/config.yaml ${STACK_ROOT}/
