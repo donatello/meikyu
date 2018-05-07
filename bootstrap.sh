@@ -29,8 +29,8 @@ apk add --no-cache --no-progress \
     tar \
     zlib-dev
 
-mkdir -p /root/.local/bin
-cd /root/.local/bin
+# mkdir -p /root/.local/bin
+cd /usr/local/bin
 tar xz --wildcards --strip-components=1 -C . '*/stack' -f /tmp/stack-1.6.5-linux-x86_64-static.tar.gz
 stack --no-terminal --resolver lts-9 --system-ghc install \
     alex \
@@ -44,11 +44,11 @@ git checkout $GHC_REV
 git submodule update --init --recursive
 mv /tmp/build.mk mk/
 ./boot
-SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-$GHC_VER --disable-ld-override $GHC_CONF_OPTS
+SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --disable-ld-override $GHC_CONF_OPTS
 make -j4
 make install
 # sed -i -e "s,ghc-$GHC_VER,ghc-$GHC_LIB_VER," /root/.stack/programs/x86_64-linux/ghc-$GHC_VER/share/doc/ghc-$GHC_VER/html/index.html
-printf "installed" > /root/.stack/programs/x86_64-linux/ghc-$GHC_VER.installed
+# printf "installed" > /root/.stack/programs/x86_64-linux/ghc-$GHC_VER.installed
 
 # cp -r /root/.stack/programs/x86_64-linux/ghc-$GHC_VER/share/doc/ghc-$GHC_VER/html /tmp
 # cd /tmp/html
@@ -80,7 +80,6 @@ apk del \
     py3-sphinx \
     sed
 
-mv /root/.stack/programs /tmp/programs
 rm -rf \
     /tmp/bootstrap.sh \
     /tmp/ghc \
@@ -92,4 +91,3 @@ rm -rf \
     /root/.stack
 mkdir /root/.stack
 mv /tmp/config.yaml /root/.stack/
-mv /tmp/programs /root/.stack/programs
