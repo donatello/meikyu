@@ -1,20 +1,20 @@
 version: 2
 
 jobs:
-  ghc-8.2.2:
+  ghc-8.4.3:
     docker:
       - image: docker:stable-git
     environment:
-      - GHC_REV: "ghc-8.2.2-release"
-      - GHC_VER: "8.2.2"
+      - GHC_REV: "ghc-8.4.3-release"
+      - GHC_VER: "8.4.3"
       # - GHC_CONF_OPTS: --enable-unregisterised
     steps:
       - checkout
       - setup_remote_docker
       - run: |
           docker login -u donatello -p $DOCKER_PASS
-          docker build --build-arg GHC_REV=$GHC_REV --build-arg GHC_VER=$GHC_VER --build-arg GHC_CONF_OPTS=$GHC_CONF_OPTS -t donatello/meikyu:ghc-8.2.2 .
-          docker push donatello/meikyu:ghc-8.2.2
+          docker build --build-arg GHC_REV=$GHC_REV --build-arg GHC_VER=$GHC_VER --build-arg GHC_CONF_OPTS=$GHC_CONF_OPTS -t donatello/meikyu:ghc-8.4.3 .
+          docker push donatello/meikyu:ghc-8.4.3
 
   # ghc-head:
   #   docker:
@@ -36,4 +36,4 @@ workflows:
   version: 2
   build:
     jobs:
-      - ghc-8.2.2
+      - ghc-8.4.3
